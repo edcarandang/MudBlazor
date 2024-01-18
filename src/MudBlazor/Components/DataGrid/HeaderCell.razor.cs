@@ -182,7 +182,17 @@ namespace MudBlazor
                 if (DataGrid == null)
                     return false;
 
-                return DataGrid.FilterDefinitions.Any(x => x.Column?.PropertyName == Column?.PropertyName && x.Operator != null && x.Value != null);
+                // Retrieve all filter definitions for the column assigned to the Header
+                var filterDefinitions = DataGrid.FilterDefinitions.Where(x => x.Column?.PropertyName == Column?.PropertyName && x.Operator != null && x.Value != null).ToList();
+                // If DataGrid.FilterNode is not simple, and there is only one filter definition
+                // Assign it to the FilterDefinition of the FilterContext of the column
+                // because it is used by the MudPopover for the ColumnFilterMenu
+                if (DataGrid.FilterMode == DataGridFilterMode.ColumnFilterMenu && filterDefinitions.Count == 1)
+                {
+                    Column.FilterContext.FilterDefinition = filterDefinitions[0];
+                }
+
+                return filterDefinitions.Any();
             }
         }
 
