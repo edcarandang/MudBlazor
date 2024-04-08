@@ -5,9 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
-using MudBlazor.Services;
 
 namespace MudBlazor
 {
@@ -22,9 +22,6 @@ namespace MudBlazor
 
         [Inject]
         internal IPopoverService PopoverService { get; set; } = null!;
-
-        [Inject]
-        internal IRenderContext RenderContext { get; set; } = null!;
 
         /// <summary>
         /// In some scenarios we need more than one ThemeProvider but we must not have more than one
@@ -44,11 +41,6 @@ namespace MudBlazor
 
         protected override void OnInitialized()
         {
-            if (RenderContext.IsStaticServer())
-            {
-                IsEnabled = false;
-            }
-
             if (IsEnabled == false)
             {
                 return;
@@ -127,7 +119,7 @@ namespace MudBlazor
         Guid IPopoverObserver.Id { get; } = Guid.NewGuid();
 
         /// <inheritdoc />
-        async Task IPopoverObserver.PopoverCollectionUpdatedNotificationAsync(PopoverHolderContainer container)
+        async Task IPopoverObserver.PopoverCollectionUpdatedNotificationAsync(PopoverHolderContainer container, CancellationToken cancellationToken)
         {
             switch (container.Operation)
             {
@@ -136,6 +128,11 @@ namespace MudBlazor
                     {
                         foreach (var holder in container.Holders)
                         {
+                            if (cancellationToken.IsCancellationRequested)
+                            {
+                                return;
+                            }
+
                             if (holder.ElementReference is not null)
                             {
                                 await InvokeAsync(holder.ElementReference.StateHasChanged);
