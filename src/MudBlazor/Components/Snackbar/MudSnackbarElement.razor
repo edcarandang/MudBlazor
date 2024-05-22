@@ -8,7 +8,7 @@
 
 @Css
 <div @attributes="UserAttributes" class="@SnackbarClass" style="@AnimationStyle" @onclick="EventUtil.AsNonRenderingEventHandler(SnackbarClicked)"
-     @onmouseenter="InteractionStartHandler" @onmouseleave="InteractionEndHandler" @ontouchstart="InteractionStartHandler" @ontouchend="InteractionEndHandler" @ontouchcancel="InteractionEndHandler">
+     @onpointerenter="InteractionStartHandler" @onpointerleave="InteractionEndHandler" @ontouchstart="InteractionStartHandler" @ontouchend="InteractionEndHandler" @ontouchcancel="InteractionEndHandler">
     @if (!HideIcon)
     {
         <div class="mud-snackbar-icon">
@@ -29,7 +29,7 @@
 
             @if (ShowActionButton)
             {
-                <MudButton Class="mud-snackbar-action-button" Variant="@ActionVariant" Color="@ActionColor" OnClick="ActionClicked" DisableElevation>@Action</MudButton>
+                <MudButton Class="mud-snackbar-action-button" Variant="@ActionVariant" Color="@ActionColor" OnClick="ActionClicked" DropShadow="false">@Action</MudButton>
             }
 
             @if (ShowCloseIcon)

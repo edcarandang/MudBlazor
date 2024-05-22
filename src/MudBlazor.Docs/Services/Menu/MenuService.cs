@@ -51,7 +51,7 @@ namespace MudBlazor.Docs.Services
             .AddItem("Expansion Panels", typeof(MudExpansionPanels), typeof(MudExpansionPanel))
             .AddItem("Image", typeof(MudImage))
             .AddItem("Icons", typeof(MudIcon))
-            .AddItem("List", typeof(MudList), typeof(MudListItem), typeof(MudListSubheader))
+            .AddItem("List", typeof(MudList<T>), typeof(MudListItem<T>), typeof(MudListSubheader))
             .AddItem("Paper", typeof(MudPaper))
             .AddItem("Rating", typeof(MudRating), typeof(MudRatingItem))
             .AddItem("Skeleton", typeof(MudSkeleton))
@@ -120,6 +120,7 @@ namespace MudBlazor.Docs.Services
                 .AddItem("Pie Chart", typeof(Pie))
                 .AddItem("Bar Chart", typeof(Bar))
                 .AddItem("Stacked Bar Chart", typeof(StackedBar))
+                .AddItem("Time Series Chart", typeof(TimeSeries))
             )
             // this must be last!
             .GetComponentsSortedByName();
